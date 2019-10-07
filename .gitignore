@@ -1,0 +1,7 @@
+node_modules
+dist
+.env
+docker.env
+Dockerfile.dev
+yarn.lock
+yarn-error.log
