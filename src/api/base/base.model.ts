@@ -1,12 +1,9 @@
-import { IsNotEmpty } from 'class-validator';
 import { CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 export abstract class BaseModel {
-  @IsNotEmpty()
-  @CreateDateColumn()
+  @CreateDateColumn({default: () => 'CURRENT_TIMESTAMP'})
   public created_at: Date;
 
-  @IsNotEmpty()
-  @UpdateDateColumn()
+  @UpdateDateColumn({default: () => 'CURRENT_TIMESTAMP'})
   public updated_at: Date;
 }

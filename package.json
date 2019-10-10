@@ -6,6 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc -p tsconfig.json",
+    "typeorm:create": "ts-node -r tsconfig-paths/register ./node_modules/.bin/typeorm -d src/migrations",
+    "typeorm:run": "ts-node -r tsconfig-paths/register ./node_modules/.bin/typeorm",
+    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
     "dev": "nodemon --watch src --watch .env"
   },
   "author": "",
@@ -13,6 +16,7 @@
   "dependencies": {
     "@types/socket.io": "^2.1.3",
     "body-parser": "^1.19.0",
+    "class-transformer": "^0.2.3",
     "class-validator": "^0.10.1",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
@@ -31,6 +35,7 @@
     "@types/node": "^12.7.11",
     "nodemon": "^1.19.0",
     "ts-node": "^8.3.0",
+    "tsconfig-paths": "^3.9.0",
     "tslint": "^5.20.0",
     "typescript": "^3.4.5"
   }

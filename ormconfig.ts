@@ -1,4 +1,4 @@
-import User from '../src/api/user/user.model';
+import User from './src/api/user/user.model';
 import { ConnectionOptions } from 'typeorm';
 
 const config: ConnectionOptions = {
@@ -8,14 +8,13 @@ const config: ConnectionOptions = {
   username: process.env.MYSQL_USER,
   password: process.env.MYSQL_PASSWORD,
   database: process.env.MYSQL_DATABASE,
-  entities: [
-    User,
-  ],
-  // migrations: [
-  //   __dirname + 'src/database/migrations/**/*.ts',
-  // ],
-  synchronize: true,
+  entities: [User],
+  migrations: ['src/migrations/**/*.ts'],
+  synchronize: false,
   logging: true,
+  cli: {
+    migrationsDir: 'src/migrations/',
+  },
 };
 
-export default config;
+export = config;

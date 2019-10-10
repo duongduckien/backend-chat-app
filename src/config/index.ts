@@ -2,7 +2,7 @@ import express from 'express';
 import { ApplicationConfig } from './app.conf';
 import { DBConfig } from './db.conf';
 import { Routes } from './routes.conf';
-import typeormConfig from '../ormconfig';
+import config from '../../ormconfig';
 import { errorHandler } from '../errors/ErrorHandler';
 import { SocketConfig } from './socket.conf';
 
@@ -11,7 +11,7 @@ export class Config {
     try {
       ApplicationConfig.init(app);
       Routes.init(app, router);
-      DBConfig.init(typeormConfig);
+      DBConfig.init(config);
       SocketConfig.init(app);
       app.use(errorHandler);
     } catch (error) {

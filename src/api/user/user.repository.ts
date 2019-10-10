@@ -3,7 +3,17 @@ import User from './user.model';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
-  public getAll1(): Promise<User []> {
-    return this.find();
+  public async findOrCreateUser(name: string): Promise<User> {
+    let user = await this.findOne({
+      name,
+    });
+
+    if (!user) {
+      user = await this.save({
+        name,
+      });
+    }
+
+    return user;
   }
 }
