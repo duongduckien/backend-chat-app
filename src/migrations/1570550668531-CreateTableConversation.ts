@@ -27,14 +27,14 @@ export class CreateTableConversation1570550668531 implements MigrationInterface 
             name: 'created_at',
             type: 'datetime',
             isPrimary: false,
-            isNullable: false,
+            isNullable: true,
             default: 'CURRENT_TIMESTAMP',
           },
           {
             name: 'updated_at',
             type: 'datetime',
             isPrimary: false,
-            isNullable: false,
+            isNullable: true,
             default: 'CURRENT_TIMESTAMP',
           },
           {
@@ -42,6 +42,7 @@ export class CreateTableConversation1570550668531 implements MigrationInterface 
             type: 'tinyint',
             isPrimary: false,
             isNullable: false,
+            default: 0,
           },
         ],
       });

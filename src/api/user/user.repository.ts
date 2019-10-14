@@ -3,7 +3,7 @@ import User from './user.model';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
-  public async findOrCreateUser(name: string): Promise<User> {
+  public async findOrCreate(name: string): Promise<User> {
     let user = await this.findOne({
       name,
     });
@@ -13,7 +13,7 @@ export class UserRepository extends Repository<User> {
         name,
       });
     }
-
+    console.log('user', user);
     return user;
   }
 }

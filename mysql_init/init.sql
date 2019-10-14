@@ -15,7 +15,8 @@ CREATE TABLE conversation (
   created_at datetime not null default current_timestamp,
   updated_at datetime not null default current_timestamp on update current_timestamp,
   is_deleted tinyint(2),
-  primary key (id)
+  primary key (id),
+  unique unique_index_title (title)
 );
 
 CREATE TABLE messages (

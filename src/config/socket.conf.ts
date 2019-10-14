@@ -5,6 +5,7 @@ import socketIo from 'socket.io';
 export class SocketConfig {
   public static init(application: express.Application): void {
     const server: Server = createServer(application);
-    socketIo(server);
+    const io: SocketIO.Server = socketIo(server);
+    console.log('io.json;', io.json);
   }
 }

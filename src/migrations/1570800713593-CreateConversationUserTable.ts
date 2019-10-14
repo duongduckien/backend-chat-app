@@ -1,9 +1,11 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class CreateUserTable1570468062701 implements MigrationInterface {
+export class CreateConversationUserTable1570800713593
+  implements MigrationInterface {
+
   public async up(queryRunner: QueryRunner): Promise<any> {
     const table = new Table({
-      name: 'users',
+      name: 'conversation_user',
       columns: [
         {
           name: 'id',
@@ -15,19 +17,18 @@ export class CreateUserTable1570468062701 implements MigrationInterface {
           generationStrategy: 'increment',
         },
         {
-          name: 'name',
-          type: 'varchar',
-          length: '255',
+          name: 'conversation_id',
+          type: 'int',
           isPrimary: false,
           isNullable: false,
-          isUnique: true,
+          unsigned: true,
         },
         {
-          name: 'socket_id',
-          type: 'varchar',
-          length: '255',
+          name: 'users_id',
+          type: 'int',
           isPrimary: false,
-          isNullable: true,
+          isNullable: false,
+          unsigned: true,
         },
         {
           name: 'created_at',
@@ -56,6 +57,6 @@ export class CreateUserTable1570468062701 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<any> {
-    await queryRunner.dropTable('users');
+    await queryRunner.dropTable('conversation_user');
   }
 }

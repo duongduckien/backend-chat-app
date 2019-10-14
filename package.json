@@ -14,6 +14,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/http-errors": "^1.6.2",
     "@types/socket.io": "^2.1.3",
     "body-parser": "^1.19.0",
     "class-transformer": "^0.2.3",

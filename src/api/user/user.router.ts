@@ -17,7 +17,7 @@ export class UserRouter {
       .get((req, res, next) =>
         this.userController.getAll(req, res, next, getCustomRepository(UserRepository)),
       ).post(validation(User), (req, res, next) =>
-        this.userController.createUser(req, res, next, getCustomRepository(UserRepository)),
+        this.userController.create(req, res, next, getCustomRepository(UserRepository)),
       );
   }
 }

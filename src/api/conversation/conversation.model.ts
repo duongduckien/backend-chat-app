@@ -4,31 +4,28 @@ import { IsString, IsNotEmpty } from 'class-validator';
 import ConversationToUser from '../conversationtouser/conversationToUser.model';
 import Message from '../message/message.model';
 
-@Entity({ name: 'users' })
-@Unique('unique_index_name', ['name'])
-class User extends BaseModel {
+@Entity({ name: 'conversation' })
+@Unique('unique_index_title', ['title'])
+class Conversation extends BaseModel {
   @PrimaryGeneratedColumn()
   public id?: number;
 
   @IsString()
   @IsNotEmpty()
   @Column()
-  public name: string;
+  public title: string;
 
-  public socket_id: string;
-
-  @OneToMany((type) => ConversationToUser, (conversationToUser) => conversationToUser.user)
+  @OneToMany((type) => ConversationToUser, (conversationToUser) => conversationToUser.conversation)
   public conversationToUser?: ConversationToUser[];
 
   @OneToMany((type) => ConversationToUser, (conversationToUser) => conversationToUser.conversation)
   public messages?: Message[];
 
-  constructor(user: User) {
+  constructor(conversation: Conversation) {
     super();
-    this.id = user ? user.id : null;
-    this.name = user ? user.name : null;
-    this.socket_id = user ? user.socket_id : null;
+    this.id = conversation ? conversation.id : null;
+    this.title = conversation ? conversation.title : null;
   }
 }
 
-export default User;
+export default Conversation;

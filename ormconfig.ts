@@ -1,4 +1,7 @@
 import User from './src/api/user/user.model';
+import Conversation from './src/api/conversation/conversation.model';
+import Conversationtouser from './src/api/conversationtouser/conversationToUser.model';
+import Message from './src/api/message/message.model';
 import { ConnectionOptions } from 'typeorm';
 
 const config: ConnectionOptions = {
@@ -8,7 +11,7 @@ const config: ConnectionOptions = {
   username: process.env.MYSQL_USER,
   password: process.env.MYSQL_PASSWORD,
   database: process.env.MYSQL_DATABASE,
-  entities: [User],
+  entities: [User, Conversation, Conversationtouser, Message],
   migrations: ['src/migrations/**/*.ts'],
   synchronize: false,
   logging: true,

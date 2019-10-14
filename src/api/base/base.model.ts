@@ -1,4 +1,4 @@
-import { CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { CreateDateColumn, UpdateDateColumn, Column } from 'typeorm';
 
 export abstract class BaseModel {
   @CreateDateColumn({default: () => 'CURRENT_TIMESTAMP'})
@@ -6,4 +6,7 @@ export abstract class BaseModel {
 
   @UpdateDateColumn({default: () => 'CURRENT_TIMESTAMP'})
   public updated_at: Date;
+
+  @Column()
+  public is_deleted: boolean;
 }

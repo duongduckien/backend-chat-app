@@ -16,14 +16,14 @@ export class UserController {
     }
   }
 
-  public async createUser(
+  public async create(
     req: express.Request,
     res: express.Response,
     next: express.NextFunction,
     userRepository: UserRepository,
   ) {
     try {
-      const user = userRepository.findOrCreateUser(req.body.name);
+      const user = await userRepository.findOrCreate(req.body.name);
 
       res.status(200).json(user);
     } catch (error) {
