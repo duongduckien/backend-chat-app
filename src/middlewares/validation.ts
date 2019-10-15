@@ -2,16 +2,20 @@ import { Validator, ValidationError } from 'class-validator';
 import * as express from 'express';
 import { ValidationRouterError } from '../errors/ValidationRouterError';
 
-export function validation(type: any): express.RequestHandler {
-  return (req, res, next) => {
+export function validation(type: any): any {
+  return (req: express.Request, res: express.Response, next: express.NextFunction, error: ValidationRouterError) => {
+    if (!error) {
+      error = new ValidationRouterError();
+    }
     const validator = new Validator();
     const input = new type(req.body);
-    const errors = validator.validateSync(input);
-    if (errors.length > 0) {
-      const message = errors
-        .map((error: ValidationError) => Object.values(error.constraints))
+    const errorsMsg = validator.validateSync(input);
+    if (errorsMsg.length > 0) {
+      const message = errorsMsg
+        .map((errorMsg: ValidationError) => Object.values(errorMsg.constraints))
         .join(', ');
-      next(new ValidationRouterError(message));
+      error.message = message;
+      next(error);
     } else {
       req.body = input;
       next();

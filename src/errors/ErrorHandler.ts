@@ -1,9 +1,6 @@
-export function errorHandler(error: any, req: any, res: any, next: any): any {
-  console.log('error', error);
-  res.status(error.httpCode || 500);
-  res.json({
-    name: error.name,
-    message: error.message,
-    errors: error[`errors`] || [],
-  });
+import { HttpError } from "./HttpError";
+
+export function errorHandler(error: HttpError, req: any, res: any, next: any): any {
+  res.status(error.code);
+  res.json(error);
 }

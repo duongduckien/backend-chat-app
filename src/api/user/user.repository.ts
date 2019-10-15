@@ -13,7 +13,7 @@ export class UserRepository extends Repository<User> {
         name,
       });
     }
-    console.log('user', user);
+
     return user;
   }
 }
