@@ -14,9 +14,7 @@ export class UserRouter {
   public init(router: express.Router) {
     router
       .route('/users')
-      .get((req, res, next) =>
-        this.userController.getAll(req, res, next, getCustomRepository(UserRepository)),
-      ).post(validation(User), (req, res, next) =>
+      .post(validation(User), (req, res, next) =>
         this.userController.create(req, res, next, getCustomRepository(UserRepository)),
       );
   }

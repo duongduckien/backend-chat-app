@@ -4,33 +4,39 @@
   "description": "",
   "main": "src/app.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc -p tsconfig.json",
     "typeorm:create": "ts-node -r tsconfig-paths/register ./node_modules/.bin/typeorm -d src/migrations",
     "typeorm:run": "ts-node -r tsconfig-paths/register ./node_modules/.bin/typeorm",
-    "test:unit": "mocha --opts src/tests/mocha.opts --require ts-node/register src/tests/unit/**/*.spec.ts --exit",
+    "test:unit": "mocha --opts src/tests/mocha.opts --require ts-node/register --recursive src/tests/unit/**/*/**/*.spec.ts",
+    "test:integration": "NODE_ENV=test mocha --opts src/tests/mocha.opts --require ts-node/register --recursive src/tests/integration/**/*.spec.ts --exit",
+    "test": "yarn test:unit && yarn test:integration",
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
-    "test-coverage": "nyc --reporter=text --check-coverage yarn test:unit",
-    "dev": "nodemon --watch src --watch .env"
+    "test-coverage": "nyc --reporter=text --check-coverage npm run test",
+    "dev": "nodemon --watch src --watch .env.development"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/faker": "^4.1.6",
     "body-parser": "^1.19.0",
     "class-transformer": "^0.2.3",
     "class-validator": "^0.10.1",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "express": "^4.16.4",
+    "faker": "^4.1.0",
     "helmet": "^3.18.0",
     "http-status": "^1.4.0",
     "mysql": "^2.17.1",
     "nyc": "^14.1.1",
     "reflect-metadata": "^0.1.13",
     "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.0",
     "typeorm": "^0.2.19"
   },
   "devDependencies": {
+    "@istanbuljs/nyc-config-typescript": "^0.1.3",
     "@types/chai": "^4.2.3",
     "@types/chai-as-promised": "^7.1.2",
     "@types/compression": "^1.0.1",
@@ -43,6 +49,7 @@
     "@types/sinon": "^7.5.0",
     "@types/sinon-chai": "^3.2.3",
     "@types/socket.io": "^2.1.3",
+    "@types/socket.io-client": "^1.4.32",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "mocha": "^6.2.1",
@@ -58,28 +65,15 @@
   "nyc": {
     "check-coverage": true,
     "all": true,
-    "watermarks": {
-      "lines": [
-        80,
-        95
-      ],
-      "functions": [
-        80,
-        95
-      ],
-      "branches": [
-        80,
-        95
-      ],
-      "statements": [
-        80,
-        95
-      ]
-    },
+    "cache": false,
+    "branches": 80,
+    "lines": 80,
+    "functions": 80,
+    "statements": 80,
     "exclude": [
       "src/migrations",
       "src/seeds",
-      "tests/",
+      "src/tests/",
       "ormconfig.ts",
       "src/app.ts"
     ],

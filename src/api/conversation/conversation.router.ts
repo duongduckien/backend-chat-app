@@ -13,7 +13,7 @@ export class ConversationRouter {
 
   public init(router: express.Router) {
     router
-      .route('/conversation')
+      .route('/conversations')
       .post(validation(Conversation), (req, res, next) =>
         this.conversationController.create(
           req,

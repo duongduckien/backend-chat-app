@@ -33,5 +33,16 @@ export class ConversationToUserRouter {
           getCustomRepository(ConversationToUserRepository),
         ),
       );
+
+    router
+      .route('/conversationtouser/users/:users_id')
+      .get((req, res, next) =>
+        this.conversationToUserController.getListConversationByUserId(
+          req,
+          res,
+          next,
+          getCustomRepository(ConversationToUserRepository),
+        ),
+      );
   }
 }

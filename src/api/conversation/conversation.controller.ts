@@ -28,7 +28,7 @@ export class ConversationController {
       const conversation = await conversationRepository.findByIds([
         req.params.id,
       ]);
-      if (!conversation) {
+      if (conversation) {
         throw new NotFoundError('conversation not found');
       }
       res.status(200).json(conversation);
