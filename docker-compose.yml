@@ -1,40 +1,40 @@
 version: '3'
 services:
-  # mysql:
-  #   image: mysql:5.7
-  #   ports:
-  #     - 3306:3306
-  #   volumes:
-  #     - ./mysql_init:/var/lib/mysql_init:rw
-  #     # - ./mysql_init/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
-  #   env_file:
-  #     - docker.env
-      
-  # adminer:
-  #   image: adminer
-  #   ports:
-  #     - 8080:8080
-  #   depends_on:
-  #     - mysql
-
-  mysql2:
+  mysql:
     image: mysql:5.7
     ports:
       - 3306:3306
     volumes:
-      - ./mysql_init2:/var/lib/mysql_init2:rw
+      - ./mysql_init:/var/lib/mysql_init:rw
       # - ./mysql_init/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     env_file:
-      - docker.env.test
-
-  adminer2:
+      - docker.env
+      
+  adminer:
     image: adminer
     ports:
-      - 8082:8080
+      - 8080:8080
     depends_on:
-      - mysql2
-    links:
-      - mysql2:db
+      - mysql
+
+  # mysql2:
+  #   image: mysql:5.7
+  #   ports:
+  #     - 3306:3306
+  #   volumes:
+  #     - ./mysql_init2:/var/lib/mysql_init2:rw
+  #     # - ./mysql_init/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+  #   env_file:
+  #     - docker.env.test
+
+  # adminer2:
+  #   image: adminer
+  #   ports:
+  #     - 8082:8080
+  #   depends_on:
+  #     - mysql2
+  #   links:
+  #     - mysql2:db
   
   # api:
   #   build:

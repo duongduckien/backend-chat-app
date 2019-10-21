@@ -5,13 +5,22 @@
     ],
     "jsRules": {},
     "rules": {
-      "no-console": [true, "debug", "info", "time", "timeEnd", "trace"],
-      "quotemark": false,
-      "object-literal-sort-keys": false,
-      "ordered-imports": false,
-      "variable-name":false,
-      "no-string-literal": false,
-      "no-unused-expression": false
+        "no-console": [
+            true,
+            "debug",
+            "info",
+            "time",
+            "timeEnd",
+            "trace"
+        ],
+        "quotemark": false,
+        "object-literal-sort-keys": false,
+        "ordered-imports": false,
+        "variable-name": false,
+        "no-string-literal": false,
+        "no-unused-expression": false,
+        "trailing-comma": true,
+        "arrow-parens": false
     },
     "rulesDirectory": []
 }

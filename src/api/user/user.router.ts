@@ -5,17 +5,22 @@ import { getCustomRepository } from 'typeorm';
 import { validation } from '../../middlewares/validation';
 import User from './user.model';
 export class UserRouter {
-  private userController: UserController;
+    private userController: UserController;
 
-  constructor() {
-    this.userController = new UserController();
-  }
+    constructor() {
+        this.userController = new UserController();
+    }
 
-  public init(router: express.Router) {
-    router
-      .route('/users')
-      .post(validation(User), (req, res, next) =>
-        this.userController.create(req, res, next, getCustomRepository(UserRepository)),
-      );
-  }
+    public init(router: express.Router) {
+        router
+            .route('/users')
+            .post(validation(User), (req, res, next) =>
+                this.userController.create(
+                    req,
+                    res,
+                    next,
+                    getCustomRepository(UserRepository),
+                ),
+            );
+    }
 }
