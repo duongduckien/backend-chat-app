@@ -4,7 +4,7 @@ import { MessageRepository } from './message.repository';
 import { getCustomRepository } from 'typeorm';
 import { ConversationToUserRepository } from '../conversationtouser/conversationToUser.repository';
 import Message from './message.model';
-import { validation } from 'src/middlewares/validation';
+import { validation } from '../../middlewares/validation';
 export class MessageRouter {
     private messageController: MessageController;
 
@@ -27,7 +27,7 @@ export class MessageRouter {
 
         router
             .route('/message')
-            .get(validation(Message), (req, res, next) =>
+            .post(validation(Message), (req, res, next) =>
                 this.messageController.create(
                     req,
                     res,

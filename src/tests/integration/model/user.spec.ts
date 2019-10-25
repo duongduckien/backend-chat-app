@@ -1,34 +1,35 @@
 import { expect } from '../../helpers/chai';
 import {
-    cleanAllTable,
-    getEntities,
     getRepository,
-    closeDbConnection
+    closeDbConnection,
+    migrateDatabase
 } from '../../helpers/database';
 import { createUser } from '../../helpers/fixtures';
 import { DBConfig } from '../../../config/db.conf';
 import config from '../../../../ormconfig';
+import { Connection } from 'typeorm';
 
 describe('User instance', () => {
-    let userRepository: any = null;
-
+    let connection: Connection = null;
     before('before', async () => {
-        await closeDbConnection(DBConfig.Instance);
         await DBConfig.init(config);
-        userRepository = getRepository('users', DBConfig.Instance);
+        connection = DBConfig.Instance;
+        await migrateDatabase(connection);
     });
 
-    beforeEach('fixtures', async () => {
-        await cleanAllTable(DBConfig.Instance, getEntities(DBConfig.Instance));
-        createUser('test', 'users', DBConfig.Instance);
+    after('after', async () => {
+        await closeDbConnection(connection);
     });
 
     it('finds user by id', async () => {
+        await createUser('test', 'users', connection);
+        const userRepository = getRepository('users', connection);
         const user = await userRepository.findByIds(1);
         expect(user).to.not.be.null;
     });
 
     it('finds non existent user by id', async () => {
+        const userRepository = getRepository('users', connection);
         const invalidId = 100000;
         const user = await userRepository.findByIds(invalidId);
         expect(user).to.be.length(0);

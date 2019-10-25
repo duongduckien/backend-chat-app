@@ -11,6 +11,7 @@
     "test:integration": "NODE_ENV=test mocha --opts src/tests/mocha.opts --require ts-node/register --recursive src/tests/integration/**/*.spec.ts --exit",
     "test": "yarn test:unit && yarn test:integration",
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
+    "typeorm:test": "NODE_ENV=test ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
     "test-coverage": "nyc --reporter=text --check-coverage npm run test",
     "dev": "nodemon --watch src --watch .env.development"
   },

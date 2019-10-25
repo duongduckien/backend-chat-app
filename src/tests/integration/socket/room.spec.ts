@@ -1,28 +1,53 @@
+import {
+    migrateDatabase,
+    closeDbConnection
+} from '../../helpers/database';
 import { expect } from '../../helpers/chai';
-// import { env } from '../../../env';
+import { env } from '../../../env';
 import { initSocketServer } from '../../helpers/wsserver';
 import { SocketConfig } from '../../../config/socket.conf';
 import { room } from '../../../socket/room';
+import { DBConfig } from '../../../config/db.conf';
+import { createUser } from '../../helpers/fixtures';
+import { Connection } from 'typeorm';
+import config from '../../../../ormconfig';
 import io from 'socket.io-client';
 
 describe('Room Socket', () => {
     let socket: any = null;
     let socket2: any = null;
-    before('before', done => {
+    let connection: Connection = null;
+    before('before', async () => {
         initSocketServer();
-        done();
-    });
-
-    beforeEach('fixtures', done => {
-        // Setup
+        await DBConfig.init(config);
+        connection = DBConfig.Instance;
+        await migrateDatabase(connection);
         room(SocketConfig.Instance);
+    });
+
+    after('after', async () => {
+        await closeDbConnection(connection);
+    });
+
+    afterEach('after', done => {
+        // Cleanup
+        if (socket.connected) {
+            console.log('socket 1 disconnecting...');
+            socket.disconnect();
+            socket = null;
+        }
+
+        if (socket2 && socket2.connected) {
+            console.log('socket 2 disconnecting...');
+            socket2.disconnect();
+            socket2 = null;
+        }
+
         done();
     });
 
-    it.only('Create new room ', done => {
-        socket = io.connect(`http://localhost:3003/rooms`, {
-            reconnectionDelay: 0,
-            forceNew: true,
+    it('Create new room ', done => {
+        socket = io.connect(`http://localhost:${env.app.port}/rooms`, {
             transports: ['websocket']
         });
 
@@ -38,15 +63,11 @@ describe('Room Socket', () => {
     });
 
     it('Create new room for many users', done => {
-        socket = io.connect(`http://localhost:3003/rooms`, {
-            reconnectionDelay: 0,
-            forceNew: true,
+        socket = io.connect(`http://localhost:${env.app.port}/rooms`, {
             transports: ['websocket']
         });
 
-        socket2 = io.connect(`http://localhost:3003/rooms`, {
-            reconnectionDelay: 0,
-            forceNew: true,
+        socket2 = io.connect(`http://localhost:${env.app.port}/rooms`, {
             transports: ['websocket']
         });
 
@@ -66,17 +87,34 @@ describe('Room Socket', () => {
         }, 2000);
     });
 
-    afterEach('after', done => {
-        // Cleanup
-        if (socket.connected) {
-            socket.disconnect();
-        }
+    it('Init Group Chat', async () => {
+        const user = await createUser('test', 'users', DBConfig.Instance);
+        socket = io.connect(`http://localhost:${env.app.port}/rooms`, {
+            transports: ['websocket']
+        });
 
-        if (socket2 && socket2.connected) {
-            console.log('disconnecting...');
-            socket.disconnect();
-        }
+        socket.emit('initGroupChat', user.identifiers[0].id, (response: any) => {
+            expect(response).to.equals('init group chat success');
+        });
 
-        done();
     });
+
+    it('Init Group Chat with error', done => {
+        socket = io.connect(`http://localhost:${env.app.port}/rooms`, {
+            transports: ['websocket']
+        });
+
+        const id = 11111;
+        socket.emit('initGroupChat', id);
+
+        socket.on('errorHanlder', (error: any) => {
+            expect(error).to.haveOwnProperty(
+                'message',
+                'User not found with id: ' + id
+            );
+            done();
+        });
+
+    });
+
 });

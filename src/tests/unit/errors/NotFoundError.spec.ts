@@ -18,7 +18,6 @@ describe('Not Found error', () => {
             'message',
             'my custom message'
         );
-        expect(new NotFoundError()).to.haveOwnProperty('code');
     });
 
     it('inherits from BaseError', () => {

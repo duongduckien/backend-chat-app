@@ -10,3 +10,8 @@ export function errorHandler(
     res.status(error.code || new InternalServerError(error));
     res.json(error);
 }
+
+export function errorHandlerForSocket(error: BaseError) {
+    error.code || new InternalServerError(error);
+    return error;
+}

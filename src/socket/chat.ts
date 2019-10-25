@@ -1,7 +1,11 @@
-// import { getCustomRepository } from 'typeorm';
-// import { UserRepository } from '../api/user/user.repository';
+import { getCustomRepository } from 'typeorm';
+import { UserRepository } from '../api/user/user.repository';
+import { ConversationToUserRepository } from '../api/conversationtouser/conversationToUser.repository';
+import { errorHandlerForSocket } from '../errors/ErrorHandler';
 export const chat = (io: SocketIO.Server): void => {
     io.of('/chatter').on('connection', socket => {
+        const userRepository = getCustomRepository(UserRepository);
+        const conversationToUserRepository = getCustomRepository(ConversationToUserRepository);
         const socketId = socket.id;
         socket.on('join', data => {
             try {
@@ -13,35 +17,42 @@ export const chat = (io: SocketIO.Server): void => {
                 socket.emit('updateUsersList', JSON.stringify(data.users));
             } catch (error) {
                 console.log('error', error.message);
-                io.to(socketId).emit('error', {
-                    code: 500,
-                    message: error.message
-                });
+                io.to(socketId).emit('error', errorHandlerForSocket(error));
             }
         });
 
-        socket.on('disconnect', () => {
-            // try {
-            //   // get user by socket id
-            //   const userRepository = getCustomRepository(UserRepository);
-            //   const user = userRepository.find({
-            //     where: {
-            //       socket_id: socket.id,
-            //     },
-            //   });
-            //   socket.leaveAll
-            //   socket.leave(room.roomID);
-            //   socket.broadcast
-            //     .to(room.roomID)
-            //     .emit('updateUsersList', JSON.stringify(room.users));
-            // } catch (error) {
-            //   console.log('error', error.message);
-            //   io.to(socketId).emit('error', { code: 500, message: error.message });
-            // }
+        socket.on('disconnect', async () => {
+            try {
+                // get user by socket id
+                const user = await userRepository.findOne({
+                    where: {
+                        socket_id: socket.id,
+                    },
+                });
+                const listConversationToUser  = await conversationToUserRepository.find({
+                    where: {
+                        users_id: user.id,
+                    },
+                });
+                socket.leaveAll();
+
+                for (const item of listConversationToUser) {
+                    socket.broadcast
+                    .to(item.conversation_id.toString())
+                    .emit('updateUsersList', JSON.stringify(item));
+                }
+            } catch (error) {
+              console.log('error', error.message);
+              io.to(socketId).emit('error', errorHandlerForSocket(error));
+            }
         });
 
-        // socket.on('newMessage', data => {
-        //   socket.to(data.roomID).emit('inMessage', JSON.stringify(data));
-        // });
+        socket.on('newMessage', data => {
+          try {
+            socket.to(data.conversation_id).emit('inMessage', JSON.stringify(data));
+          } catch (error) {
+            io.to(socketId).emit('error1', errorHandlerForSocket(error));
+          }
+        });
     });
 };

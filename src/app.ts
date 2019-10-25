@@ -5,8 +5,8 @@ const app = express();
 const PORT = env.app.port || 3000;
 
 try {
-    Config.init(app, express.Router());
-    app.listen(PORT, () => {
+    const server = Config.init(app, express.Router());
+    server.listen(PORT, () => {
         console.log(`Server running on ${PORT}`);
     });
 } catch (error) {

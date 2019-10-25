@@ -1,8 +1,20 @@
 import { Connection } from 'typeorm';
-
 export const migrateDatabase = async (connection: Connection) => {
-  await connection.dropDatabase();
-  return connection.runMigrations();
+    // await connection.synchronize(true);
+    // console.log('connection', connection);
+    // const queryRunner = connection.createQueryRunner();
+    // const hasDatabase = await queryRunner.hasDatabase(env.db.database);
+    // console.log('hasDatabase', hasDatabase);
+    // if (hasDatabase) {
+    //     console.log(1);
+    //     await queryRunner.dropDatabase(env.db.database);
+    //     await queryRunner.createDatabase(env.db.database, true);
+    // } else {
+    //     console.log(2);
+    //     await queryRunner.createDatabase(env.db.database, true);
+    // }
+    await connection.dropDatabase();
+    return connection.runMigrations();
 };
 
 export const getEntities = (connection: Connection): any[] => {
@@ -38,9 +50,7 @@ export const getRepository = (tableName: string, connection: Connection): any =>
 
 export const closeDbConnection = async (connection: Connection) => {
   try {
-    if (connection && connection.isConnected) {
-      await connection.close();
-    }
+    await connection.close();
   } catch (error) {
     console.log(error);
   }

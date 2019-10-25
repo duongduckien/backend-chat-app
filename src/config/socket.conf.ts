@@ -3,11 +3,11 @@ import { createServer, Server } from 'http';
 import socketIo from 'socket.io';
 
 export class SocketConfig {
-    public static init(application: express.Application): void {
+    public static init(application: express.Application): Server {
         try {
-            const server: Server = createServer(application);
-            this.socketServer = socketIo(server);
-            this.socketServer.listen(3003);
+            const server = createServer(application);
+            this.socketServer = socketIo.listen(server);
+            return server;
         } catch (error) {
             throw error;
         }
