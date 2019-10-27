@@ -6,9 +6,6 @@ jobs:
         environment:
             MYSQL_HOST: 127.0.0.1
             MYSQL_PORT: 3306
-            MYSQL_USER: admin
-            MYSQL_PASSWORD: 12345
-            MYSQL_DATABASE: chatapp_test
             PORT: 3000
             TYPE: mysql
             TYPEORM_LOGGING: false
