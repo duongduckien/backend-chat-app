@@ -12,11 +12,6 @@ jobs:
             TYPEORM_MIGRATIONS: src/migrations/**/*.ts
             TYPEORM_MIGRATIONS_DIR: src/migrations/
             TYPEORM_SYNCHRONIZE: false
-            MYSQL_ROOT_PASSWORD: 12345
-            MYSQL_DATABASE: chatapp_test
-            MYSQL_USER: admin
-            MYSQL_PASSWORD: 12345
-      - image: circleci/php:7.2-node-browsers
       - image: mysql:5.7
         environment:
             MYSQL_ROOT_PASSWORD: 12345
@@ -48,21 +43,13 @@ jobs:
           command: sudo npm i -g typeorm
 
       - run: sudo apt-get update
-    #   - run: sudo -E docker-php-ext-install zip bcmath pdo_mysql
-    #   - run: sudo -E docker-php-ext-install pdo pdo_mysql
-    #   - run: sudo -E docker-php-ext-install bcmath && sudo docker-php-ext-enable bcmath
       - run: sudo apt install -y mysql-client
-      - run:
-          name: Mysql database
-          command: mysql --host="127.0.0.1" --user="admin" --password="12345" -e "create database chatapp_test;"
-        #   command: mysql -h 127.0.0.1 -u root -e "create database chatapp_test;"
+    #   - run:
+    #       name: Mysql database
+    #       command: mysql --host="127.0.0.1" --user="admin" --password="12345" -e "create database chatapp_test;"
       - run:
           name: Typeorm Migrations
           command: npm run typeorm:test migration:run
-
-      - run:
-          name: Run Typecheck
-          command: npm run typecheck
 
       - run:
           name: Run tslint
