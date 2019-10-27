@@ -33,8 +33,11 @@ export class ConversationToUserRouter {
                     next,
                     getCustomRepository(ConversationToUserRepository),
                 ),
-            )
-            .put((req, res, next) =>
+            );
+
+        router
+            .route('/ctu/user/:users_id/conversation/:conversation_id')
+            .patch((req, res, next) =>
                 this.conversationToUserController.update(
                     req,
                     res,

@@ -40,6 +40,8 @@ export const chat = (io: SocketIO.Server): void => {
                     socket.broadcast
                     .to(item.conversation_id.toString())
                     .emit('updateUsersList', JSON.stringify(item));
+                    item.updated_at = new Date();
+                    await conversationToUserRepository.save(item);
                 }
             } catch (error) {
               console.log('error', error.message);

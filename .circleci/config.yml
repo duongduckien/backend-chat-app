@@ -1,0 +1,63 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:10.15.0
+        environment:
+            MYSQL_HOST=127.0.0.1
+            MYSQL_PORT=3306
+            MYSQL_USER=admin
+            MYSQL_PASSWORD=12345
+            MYSQL_DATABASE=chatapp_test
+            PORT=3000
+            TYPE=mysql
+            TYPEORM_LOGGING=false
+            TYPEORM_MIGRATIONS=src/migrations/**/*.ts
+            TYPEORM_MIGRATIONS_DIR=src/migrations/
+            TYPEORM_SYNCHRONIZE=false
+        - image: mysql:5.7
+    working_directory: ~/BackEnd_ChatApp
+
+    steps:
+      - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+
+      - run:
+          name: install-npm-wee
+          command: npm install
+
+      - save_cache:
+          name: Save-Cache
+          paths:
+            - './node_modules'
+          key: dependency-cache-{{ checksum "package.json"}}
+
+      - run:
+          name: install-global-typeorm
+          command: sudo npm i -g typeorm
+
+      - run: sudo apt-get update
+      - run: sudo apt install -y mysql-client
+      - run:
+          name: Mysql database
+          command: mysql --host="127.0.0.1" --user="root" --password="root" -e "create database chatapp_test;"
+        #   command: mysql -h 127.0.0.1 -u root -e "create database chatapp_test;"
+      - run:
+          name: Typeorm Migrations
+          command: npm run typeorm:test migration:run
+          
+      - run:
+          name: Run Typecheck
+          command: npm run typecheck
+
+      - run:
+          name: Run tslint
+          command: npm run tslint
+
+      - run: # run tests
+          name: test
+          command: npm run test
+          environment:
+            NODE_ENV: test
+    

@@ -45,6 +45,8 @@ export const room = (io: SocketIO.Server): void => {
 
                 for (const item of listConversationToUser) {
                     socket.join(item.conversation_id.toString());
+                    item.updated_at = new Date();
+                    await conversationToUserRepository.save(item);
                 }
 
                 fn('init group chat success');
