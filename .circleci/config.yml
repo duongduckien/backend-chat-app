@@ -4,7 +4,7 @@ jobs:
     docker:
       - image: circleci/node:10.15.0
         environment:
-            MYSQL_HOST: 127.0.0.1
+            MYSQL_HOST: 'localhost'
             MYSQL_PORT: 3306
             MYSQL_USER: admin
             MYSQL_PASSWORD: 12345
@@ -42,7 +42,7 @@ jobs:
       - run: sudo apt install -y mysql-client
       - run:
           name: Mysql database
-          command: mysql --host="127.0.0.1" --user="root" --password="root" -e "create database chatapp_test;"
+          command: mysql --host="localhost" --user="root" --password="root" -e "create database chatapp_test;"
         #   command: mysql -h 127.0.0.1 -u root -e "create database chatapp_test;"
       - run:
           name: Typeorm Migrations
