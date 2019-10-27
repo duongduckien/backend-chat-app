@@ -16,7 +16,8 @@
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
     "typeorm:test": "NODE_ENV=test ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
     "test-coverage": "nyc --reporter=text --check-coverage npm run test",
-    "dev": "nodemon --watch src --watch .env.development"
+    "dev": "nodemon --watch src --watch .env.development",
+    "tslint": "tslint -c tslint.json -p tsconfig.json"
   },
   "author": "",
   "license": "ISC",
