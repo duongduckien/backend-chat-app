@@ -51,7 +51,7 @@ jobs:
     #   - run: sudo -E docker-php-ext-install zip bcmath pdo_mysql
     #   - run: sudo -E docker-php-ext-install pdo pdo_mysql
     #   - run: sudo -E docker-php-ext-install bcmath && sudo docker-php-ext-enable bcmath
-    #   - run: sudo apt install -y mysql-client
+      - run: sudo apt install -y mysql-client
       - run:
           name: Mysql database
           command: mysql --host="localhost" --user="admin" --password="12345" -e "create database chatapp_test;"
