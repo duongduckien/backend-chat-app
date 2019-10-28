@@ -4,12 +4,14 @@ import * as path from 'path';
  * Load .env file or for tests the .env.test file.
  */
 // tslint:disable-next-line: max-line-length
-dotenv.config({
-    path: path.join(
-        process.cwd(),
-        `.env${process.env.NODE_ENV === 'test' ? '.test' : '.development'}`
-    )
-});
+if (process.env.NODE_ENV !== 'development') {
+    dotenv.config({
+        path: path.join(
+            process.cwd(),
+            `.env${process.env.NODE_ENV === 'test' ? '.test' : '.development'}`
+        )
+    });
+}
 /**
  * Environment variables
  */
