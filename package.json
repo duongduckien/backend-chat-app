@@ -17,7 +17,8 @@
     "typeorm:test": "NODE_ENV=test ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
     "test-coverage": "nyc --reporter=text --check-coverage npm run test",
     "dev": "nodemon --watch src --watch .env.development",
-    "tslint": "tslint -c tslint.json -p tsconfig.json"
+    "tslint": "tslint -c tslint.json -p tsconfig.json",
+    "heroku-postbuild": "npm run build"
   },
   "author": "",
   "license": "ISC",
