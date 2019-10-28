@@ -1,9 +1,17 @@
-export function errorHandler(error: any, req: any, res: any, next: any): any {
-  console.log('error', error);
-  res.status(error.httpCode || 500);
-  res.json({
-    name: error.name,
-    message: error.message,
-    errors: error[`errors`] || [],
-  });
+import { BaseError } from './BaseError';
+import { InternalServerError } from './InternalServerError';
+
+export function errorHandler(
+    error: BaseError,
+    req: any,
+    res: any,
+    next: any
+): any {
+    res.status(error.code || new InternalServerError(error));
+    res.json(error);
+}
+
+export function errorHandlerForSocket(error: BaseError) {
+    error.code || new InternalServerError(error);
+    return error;
 }

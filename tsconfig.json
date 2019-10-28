@@ -7,7 +7,7 @@
     "outDir": "dist",
     "noImplicitAny": true,
     "module": "commonjs",
-    "target": "es6",
+    "target": "es5",
     "moduleResolution": "node",
     "sourceMap": true,
     "noUnusedLocals": true,
@@ -16,15 +16,21 @@
     "esModuleInterop": true,
     "strictPropertyInitialization":false,
     "emitDecoratorMetadata": true,
+    "strictNullChecks": false,
     "types": [
-      "node"
+      "node",
+      "mocha",
+      "chai"
     ],
     "typeRoots": [
       "./node_modules/@types"
     ]
   },
   "include": [
-    "./src/**/*"
+    "./src/**/*",
+    "./ormconfig.ts",
+    "src/migrations",
+    "src/seeds"
   ],
   "exclude": [
     "./node_modules",
