@@ -36,7 +36,7 @@ export class ConversationToUserController {
                 [req.params.id],
                 { relations: ['user', 'conversation'] },
             );
-            if (!conversationToUser) {
+            if (conversationToUser.length === 0) {
                 throw new NotFoundError('ConversationToUser not found');
             }
             res.status(200).json(conversationToUser);
