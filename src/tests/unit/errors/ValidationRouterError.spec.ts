@@ -1,5 +1,4 @@
 import { ValidationRouterError } from '../../../errors/ValidationRouterError';
-// import { HttpError } from '../../../errors/HttpError';
 import { BaseError } from '../../../errors/BaseError';
 import { expect } from '../../helpers/chai';
 import 'mocha';

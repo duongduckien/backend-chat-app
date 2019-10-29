@@ -1,6 +1,5 @@
 import { NotFoundError } from '../../../errors/NotFoundError';
 import { BaseError } from '../../../errors/BaseError';
-// import { HttpError } from '../../../errors/HttpError';
 import { expect } from '../../helpers/chai';
 import 'mocha';
 
