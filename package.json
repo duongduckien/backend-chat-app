@@ -19,7 +19,8 @@
     "test-coverage": "nyc --reporter=text --check-coverage npm run test",
     "dev": "nodemon --watch src --watch .env.development",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
-    "heroku-postbuild": "npm run build"
+    "heroku-postbuild": "npm run build",
+    "start": "node dist/src/app.js"
   },
   "author": "",
   "license": "ISC",
