@@ -1,4 +1,3 @@
-// import { HttpError } from './HttpError';
 import httpStatus = require('http-status');
 import { BaseError } from './BaseError';
 
