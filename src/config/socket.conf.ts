@@ -21,5 +21,13 @@ export class SocketConfig {
         }
     }
 
+    public static close(): void {
+        try {
+            this.socketServer.close();
+        } catch (error) {
+            throw error;
+        }
+    }
+
     private static socketServer: SocketIO.Server = null;
 }

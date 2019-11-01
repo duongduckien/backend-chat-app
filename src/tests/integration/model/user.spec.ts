@@ -22,7 +22,7 @@ describe('User instance', () => {
     });
 
     it('finds user by id', async () => {
-        await createUser('test', 'users', connection);
+        await createUser('test', connection);
         const userRepository = getRepository('users', connection);
         const user = await userRepository.findByIds(1);
         expect(user).to.not.be.null;

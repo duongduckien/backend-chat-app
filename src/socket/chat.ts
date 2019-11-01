@@ -9,12 +9,12 @@ export const chat = (io: SocketIO.Server): void => {
         const socketId = socket.id;
         socket.on('join', data => {
             try {
-                socket.join(data.roomID);
+                socket.join(data.conversation_id);
 
                 socket.broadcast
-                    .to(data.roomID)
-                    .emit('updateUsersList', JSON.stringify(data.users));
-                socket.emit('updateUsersList', JSON.stringify(data.users));
+                    .to(data.conversation_id)
+                    .emit('updateUsersList', JSON.stringify(data));
+                socket.emit('updateUsersList', JSON.stringify(data));
             } catch (error) {
                 console.log('error', error.message);
                 io.to(socketId).emit('error', errorHandlerForSocket(error));
@@ -35,7 +35,6 @@ export const chat = (io: SocketIO.Server): void => {
                     },
                 });
                 socket.leaveAll();
-
                 for (const item of listConversationToUser) {
                     socket.broadcast
                     .to(item.conversation_id.toString())
@@ -51,7 +50,7 @@ export const chat = (io: SocketIO.Server): void => {
 
         socket.on('newMessage', data => {
           try {
-            socket.to(data.conversation_id).emit('inMessage', JSON.stringify(data));
+            socket.to(data.conversation_id).emit('inMessage', JSON.stringify(data.message));
           } catch (error) {
             io.to(socketId).emit('error1', errorHandlerForSocket(error));
           }
