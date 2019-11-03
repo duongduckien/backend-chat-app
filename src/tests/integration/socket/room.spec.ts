@@ -27,6 +27,7 @@ describe('Room Socket', () => {
 
     after('after', async () => {
         await closeDbConnection(connection);
+        SocketConfig.close();
     });
 
     afterEach('after', done => {
@@ -88,12 +89,13 @@ describe('Room Socket', () => {
     });
 
     it('Init Group Chat', async () => {
-        const user = await createUser('test', 'users', DBConfig.Instance);
+        const user = await createUser('test', DBConfig.Instance);
         socket = io.connect(`http://localhost:${env.app.port}/rooms`, {
             transports: ['websocket']
         });
 
         socket.emit('initGroupChat', user.identifiers[0].id, (response: any) => {
+            console.log('initGroupChat');
             expect(response).to.equals('init group chat success');
         });
 
