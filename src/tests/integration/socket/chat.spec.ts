@@ -31,7 +31,6 @@ describe('Room Socket', () => {
     });
 
     afterEach('after', done => {
-        console.log(3);
         // Cleanup
         if (socket.connected) {
             console.log('socket 1 disconnecting...');
@@ -66,7 +65,6 @@ describe('Room Socket', () => {
         ]).then((values) => {
             const [user1, user2, conversation] = values;
             const listUser = [user1.identifiers[0].id, user2.identifiers[0].id];
-            console.log('listUser', listUser);
 
             socket.emit('join', {
                 conversation_id: conversation.identifiers[0].id,
@@ -79,17 +77,14 @@ describe('Room Socket', () => {
             });
 
             socket.on('updateUsersList', (data: any) => {
-                console.log('socket', data);
                 expect(listUser).to.be.include(JSON.parse(data).user_id);
             });
 
             socket2.on('updateUsersList', (data: any) => {
-                console.log('socket2', data);
                 expect(listUser).to.be.include(JSON.parse(data).user_id);
             });
 
             setTimeout(() => {
-                console.log('setTimeOut');
                 done();
             }, 2000);
         });
